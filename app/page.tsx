@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 export default function Home() {
-  // --- CORE WORKING LOGIC (UNTOUCHED) ---
   const [topic, setTopic] = useState('');
   const [vibe, setVibe] = useState('energetic');
   const [script, setScript] = useState('');
@@ -33,128 +32,67 @@ export default function Home() {
     }
   };
 
-  // --- NEW STABLE SCROLL ANCHORS ---
-  const workbenchRef = useRef<HTMLDivElement>(null);
-  const infoRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = (target: React.RefObject<HTMLDivElement | null>) => {
-    target.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <main className="min-h-screen bg-[#070709] text-[#fafafa] flex flex-col items-center justify-start px-4 antialiased font-sans scroll-smooth">
-      {/* Premium Ambient Background Light glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-gradient-to-b from-purple-500/10 via-transparent to-transparent blur-3xl pointer-events-none" />
-
-      {/* --- PREMIUM FIXED HEADER --- */}
-      <nav className="w-full max-w-4xl flex items-center justify-between py-5 border-b border-zinc-900 z-50 sticky top-0 bg-[#070709]/80 backdrop-blur-md">
-        <div className="flex items-center gap-2 font-black tracking-tight text-lg cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <span className="text-purple-500">◈</span> HookFlow
+    <main style={{ minHeight: '100screen', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '4rem 1rem', maxWidth: '42rem', margin: '0 auto' }}>
+      <header style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+        <div style={{ inlineSize: 'max-content', margin: '0 auto 1rem', padding: '0.25rem 0.75rem', borderRadius: '9999px', border: '1px solid #27272a', backgroundColor: '#18181b', fontSize: '0.75rem', color: '#a1a1aa' }}>
+          ✨ Powered by Gemini 2.5 Flash
         </div>
-        <div className="flex items-center gap-6 text-xs font-semibold text-zinc-400">
-          <button onClick={() => handleScroll(infoRef)} className="hover:text-white transition-colors duration-200">How It Works</button>
-          <button onClick={() => handleScroll(workbenchRef)} className="bg-zinc-900 border border-zinc-800 text-white px-3.5 py-2 rounded-xl hover:bg-zinc-800 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">Launch Workbench</button>
-        </div>
-      </nav>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', trackingTight: '-0.025em', color: '#ffffff', marginBottom: '0.75rem' }}>
+          Short Video Essay Writer
+        </h1>
+        <p style={{ fontSize: '0.875rem', color: '#a1a1aa', maxWidth: '28rem', margin: '0 auto' }}>
+          Generate high-retention, fully fleshed-out short-form video scripts instantly.
+        </p>
+      </header>
 
-      <div className="w-full max-w-2xl z-10">
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.25rem', backgroundColor: '#141416', border: '1px solid #27272a', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#a1a1aa', textTransform: 'uppercase', tracking: '0.05em', marginBottom: '0.5rem' }}>
+            What is your video topic?
+          </label>
+          <input 
+            style={{ width: '100%' }}
+            placeholder="e.g., 3 subtle mistakes beginner coders make that waste years" 
+            value={topic} 
+            onChange={(e) => setTopic(e.target.value)} 
+          />
+        </div>
         
-        {/* --- SECTION 1: VISUAL LANDING HERO PAGE --- */}
-        <section className="py-24 text-center flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-900/30 bg-purple-950/10 text-[11px] text-purple-300 mb-6 tracking-wide">
-            ✨ AI-Powered Short Form Script Engine
-          </div>
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-b from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent sm:text-5xl leading-[1.2]">
-            Stop Staring at a Blank Script Window
-          </h1>
-          <p className="mt-4 text-sm text-zinc-400 max-w-md mx-auto leading-relaxed">
-            Generate high-retention, psychology-backed short-form scripts explicitly structured for TikTok and Reels viral viewer algorithms.
-          </p>
-          <div className="mt-8 flex gap-3">
-            <button onClick={() => handleScroll(workbenchRef)} className="bg-white text-black text-xs font-bold px-5 py-3 rounded-xl hover:bg-zinc-200 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md">
-              Start Generating Free
-            </button>
-            <button onClick={() => handleScroll(infoRef)} className="border border-zinc-800 bg-zinc-900/30 text-zinc-300 text-xs font-bold px-5 py-3 rounded-xl hover:bg-zinc-800 active:scale-[0.98] transition-all duration-200">
-              Read Parameters
-            </button>
-          </div>
-        </section>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#a1a1aa', textTransform: 'uppercase', tracking: '0.05em', marginBottom: '0.5rem' }}>
+            Select Video Tone
+          </label>
+          <select 
+            style={{ width: '100%' }}
+            value={vibe} 
+            onChange={(e) => setVibe(e.target.value)}
+          >
+            <option value="energetic">🔥 Energetic / High Velocity</option>
+            <option value="educational">💡 Calm / Deep Value Insight</option>
+            <option value="dramatic">🎬 Cinematic Storytelling</option>
+          </select>
+        </div>
 
-        {/* --- SECTION 2: BENTO VALUE SECTION --- */}
-        <section ref={infoRef} className="w-full py-12 border-t border-zinc-900/60 scroll-mt-24">
-          <h2 className="text-lg font-bold tracking-tight text-center text-zinc-300 mb-8">Engineered For Dynamic Watch-Time</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-[#0b0b0d] border border-zinc-900 p-5 rounded-2xl group hover:border-purple-500/20 transition-all duration-300">
-              <div className="w-7 h-7 bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs flex items-center justify-center rounded-lg mb-3 font-bold">01</div>
-              <h3 className="font-bold text-sm text-white mb-1">Scroll-Stopping Hooks</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">Forces highly interactive opening parameters to break viewer scrolling habits in under 3 seconds.</p>
-            </div>
-            <div className="bg-[#0b0b0d] border border-zinc-900 p-5 rounded-2xl group hover:border-purple-500/20 transition-all duration-300">
-              <div className="w-7 h-7 bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs flex items-center justify-center rounded-lg mb-3 font-bold">02</div>
-              <h3 className="font-bold text-sm text-white mb-1">Elaborated Value Logic</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">Skips boring bullet summaries. Delivers deep, conversational, step-by-step storytelling frameworks.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* --- SECTION 3: CORE APP LOGIC ENGINE --- */}
-        <section ref={workbenchRef} className="w-full py-16 border-t border-zinc-900/60 scroll-mt-24">
-          <div className="text-center mb-6">
-            <h2 className="text-xl font-bold tracking-tight text-white">Studio Workbench</h2>
-            <p className="text-xs text-zinc-500 mt-1">Configure your content parameters below.</p>
-          </div>
-
-          <div className="space-y-5 bg-[#121214]/60 border border-zinc-800/60 p-6 rounded-2xl shadow-2xl backdrop-blur-md">
-            <div>
-              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
-                What is your video topic?
-              </label>
-              <input 
-                className="w-full bg-[#161619] border border-zinc-800 text-sm text-white placeholder-zinc-500 p-3 rounded-xl focus:outline-none focus:ring-1 focus:ring-purple-500/40 transition-all shadow-inner" 
-                placeholder="e.g., 3 subtle mistakes beginner coders make that waste years" 
-                value={topic} 
-                onChange={(e) => setTopic(e.target.value)} 
-              />
-            </div>
-            
-            <div>
-              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
-                Select Video Tone
-              </label>
-              <select 
-                className="w-full bg-[#161619] border border-zinc-800 text-sm text-white p-3 rounded-xl focus:outline-none focus:ring-1 focus:ring-purple-500/40 transition-all cursor-pointer" 
-                value={vibe} 
-                onChange={(e) => setVibe(e.target.value)}
-              >
-                <option value="energetic">🔥 Energetic / High Velocity</option>
-                <option value="educational">💡 Calm / Deep Value Insight</option>
-                <option value="dramatic">🎬 Cinematic Storytelling</option>
-              </select>
-            </div>
-
-            <button 
-              onClick={generateScript} 
-              disabled={loading} 
-              className="w-full bg-white text-black p-3.5 rounded-xl text-xs font-bold tracking-wide hover:bg-zinc-200 active:scale-[0.99] disabled:opacity-40 disabled:pointer-events-none transition-all shadow-md duration-200"
-            >
-              {loading ? 'Engine processing text models...' : 'Compile Viral Script'}
-            </button>
-          </div>
-
-          {/* OUTPUT BOX BLOCK */}
-          {script && (
-            <div className="mt-8 bg-[#0a0a0c] border border-zinc-800/60 rounded-2xl shadow-2xl overflow-hidden animate-fade-in">
-              <div className="bg-[#121214]/80 border-b border-zinc-800/60 px-5 py-3 flex items-center justify-between">
-                <span className="text-xs font-mono tracking-wider text-purple-400">VIRAL_SCRIPT_V1.MD</span>
-              </div>
-              <div className="p-6 whitespace-pre-line text-sm font-medium tracking-wide leading-relaxed text-zinc-200 selection:bg-zinc-800">
-                <p className="font-sans antialiased">{script}</p>
-              </div>
-            </div>
-          )}
-        </section>
-
+        <button 
+          onClick={generateScript} 
+          disabled={loading} 
+          style={{ width: '100%' }}
+        >
+          {loading ? 'Engine processing text...' : 'Compile Viral Script'}
+        </button>
       </div>
+
+      {script && (
+        <div style={{ width: '100%', marginTop: '2rem', backgroundColor: '#0c0c0e', border: '1px solid #27272a', borderRadius: '1rem', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+          <div style={{ backgroundColor: '#141416', borderBottom: '1px solid #27272a', padding: '0.75rem 1.25rem' }}>
+            <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: '#a1a1aa' }}>VIRAL_SCRIPT_V1.MD</span>
+          </div>
+          <div style={{ padding: '1.5rem', whiteSpace: 'pre-line', fontSize: '1rem', color: '#e4e4e7', lineHeight: '1.75' }}>
+            <p style={{ margin: '0' }}>{script}</p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
