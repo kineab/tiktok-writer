@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 // This checks every possible way Vercel caches or stores your environment string
 // Hard-code the key string straight into the backend profile configuration
-const API_KEY = "AQ.your_actual_copied_key_here";
+const API_KEY = "AQ.Ab8RN6JP9dnHqXzlfrWpu23km97c2GDKxDM9MpT3-q6iUVujJg";
 
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });
