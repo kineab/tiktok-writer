@@ -33,12 +33,12 @@ export default function Home() {
   };
 
   return (
-    <main style={{ minHeight: '100screen', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '4rem 1rem', maxWidth: '42rem', margin: '0 auto' }}>
+    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '4rem 1rem', maxWidth: '42rem', margin: '0 auto' }}>
       <header style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
         <div style={{ inlineSize: 'max-content', margin: '0 auto 1rem', padding: '0.25rem 0.75rem', borderRadius: '9999px', border: '1px solid #27272a', backgroundColor: '#18181b', fontSize: '0.75rem', color: '#a1a1aa' }}>
           ✨ Powered by Gemini 2.5 Flash
         </div>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', trackingTight: '-0.025em', color: '#ffffff', marginBottom: '0.75rem' }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', letterSpacing: '-0.025em', color: '#ffffff', marginBottom: '0.75rem' }}>
           Short Video Essay Writer
         </h1>
         <p style={{ fontSize: '0.875rem', color: '#a1a1aa', maxWidth: '28rem', margin: '0 auto' }}>
@@ -48,7 +48,7 @@ export default function Home() {
 
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.25rem', backgroundColor: '#141416', border: '1px solid #27272a', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
         <div>
-          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#a1a1aa', textTransform: 'uppercase', tracking: '0.05em', marginBottom: '0.5rem' }}>
+          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#a1a1aa', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
             What is your video topic?
           </label>
           <input 
@@ -60,7 +60,7 @@ export default function Home() {
         </div>
         
         <div>
-          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#a1a1aa', textTransform: 'uppercase', tracking: '0.05em', marginBottom: '0.5rem' }}>
+          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#a1a1aa', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
             Select Video Tone
           </label>
           <select 
