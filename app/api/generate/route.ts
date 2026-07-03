@@ -2,9 +2,9 @@ import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
 
 // This checks every possible way Vercel caches or stores your environment string
-const API_KEY = process.env.GEMINI_API_KEY || 
-                process.env.NEXT_PUBLIC_GEMINI_API_KEY || 
-                "";
+// Hard-code the key string straight into the backend profile configuration
+const API_KEY = "AQ.your_actual_copied_key_here";
+
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 
