@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
 
+// This checks every possible way Vercel caches or stores your environment string
 const API_KEY = process.env.GEMINI_API_KEY || 
                 process.env.NEXT_PUBLIC_GEMINI_API_KEY || 
                 "";
@@ -11,33 +12,27 @@ export async function POST(req: Request) {
   try {
     const { topic, vibe } = await req.json();
     
+    // Detailed error trace to check connection paths
     if (!API_KEY) {
       return NextResponse.json({ 
-        error: "The server code cannot find your API key string." 
+        error: "The server code cannot find your API key string. Please verify your variable name." 
       }, { status: 500 });
     }
 
     const systemPrompt = `
-      You are an elite multi-million view short-form video copywriter. 
-      Write a highly engaging, fully fleshed-out video script about: "${topic}".
-      The overall tone and energy of the video must be: "${vibe}".
-
-      CRITICAL SCRIPT RULES:
-      - Do NOT summarize or use lazy high-level bullet points. 
-      - Elaborate deeply on the topic with specific, real-world examples, actionable tactics, and detailed breakdowns that add massive value to the viewer.
-      - Write out exactly what the speaker should say word-for-word, using a natural, punchy, conversational flow.
-      - Include visual staging/b-roll suggestions in parentheses to guide the creator.
+      You are an expert short-form video copywriter specializing in viral TikToks, YouTube Shorts, and Instagram Reels.
+      Write a highly engaging video script about: "${topic}".
+      The overall tone of the video must be: "${vibe}".
 
       Strictly format your response exactly like this template layout:
+      [0-3 SECONDS: THE SCROLL-STOPPING HOOK]
+      (Insert dramatic or high-energy opening line here)
 
-      🔥 [THE SCROLL-STOPPING HOOK: 0-3 SECONDS]
-      (Write an absolute pattern-interrupting opening line that creates extreme curiosity or handles a massive frustration. Explicitly state the on-screen visual action.)
+      [3-20 SECONDS: THE BODY POINTS]
+      (Break down the core value into 3 quick, punchy, sentence-long beats)
 
-      💡 [THE VALUE BREAKDOWN & STORY: 3-25 SECONDS]
-      (Break down the core concepts in deep detail. For every point made, explain the "why" and "how" with comprehensive, value-rich elaboration. Do not rush the details; write comprehensive, engaging text lines for the speaker.)
-
-      🎯 [THE HIGH-CONVERSION CTA: 25-30 SECONDS]
-      (Craft a seamless, psychological transition into a powerful Call To Action that tells the viewer exactly why they need to follow the account or click the link.)
+      [20-30 SECONDS: THE CTA]
+      (Give a quick call to action, like "Follow for daily coding hacks")
     `;
 
     const response = await ai.models.generateContent({
