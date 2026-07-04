@@ -14,51 +14,24 @@ export default function Home() {
     setScript('');
     
     try {
-      const systemPrompt = `
-        You are an expert short-form video copywriter specializing in viral TikToks, YouTube Shorts, and Instagram Reels.
-        Write a highly engaging video script about: "${topic}".
-        The overall tone of the video must be: "${vibe}".
-
-        Strictly format your response exactly like this template layout:
-        [0-3 SECONDS: THE SCROLL-STOPPING HOOK]
-        (Insert dramatic or high-energy opening line here)
-
-        [3-20 SECONDS: THE BODY POINTS]
-        (Break down the core value into 3 quick, punchy, sentence-long beats)
-
-        [20-30 SECONDS: THE CTA]
-        (Give a quick call to action, like "Follow for daily coding hacks")
-      `;
-
-      // Universal endpoint that allows browser fetch calls when structured correctly
-      const targetUrl = `https://googleapis.com`;
-
-      const response = await fetch(targetUrl, {
+      // Calls your clean background server function locally or on production
+      const response = await fetch('/.netlify/functions/generate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{ text: systemPrompt }]
-          }]
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, vibe }),
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
-      }
 
       const data = await response.json();
 
-      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-        setScript(data.candidates[0].content.parts[0].text);
+      if (data.error) {
+        setScript(`AI Engine Connection Error: ${data.error}`);
+      } else if (data.script) {
+        setScript(data.script);
       } else {
         setScript('Error: Received empty text from the AI system.');
       }
     } catch (err: any) {
-      setScript(`AI Generation Error: ${err.message || 'Connection Failed'}`);
+      setScript(`Network Routing Error: ${err.message || 'Connection Refused'}`);
     } finally {
       setLoading(false);
     }
