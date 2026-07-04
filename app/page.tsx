@@ -30,16 +30,13 @@ export default function Home() {
         (Give a quick call to action, like "Follow for daily coding hacks")
       `;
 
-      // The raw Google endpoint address
-      const googleUrl = `https://googleapis.com`;
-      
-      // We route the request through a public CORS wrapper to bypass browser blocking walls instantly
-      const proxyUrl = `https://allorigins.win{encodeURIComponent(googleUrl)}`;
+      // Universal endpoint that allows browser fetch calls when structured correctly
+      const targetUrl = `https://googleapis.com`;
 
-      const response = await fetch(proxyUrl, {
+      const response = await fetch(targetUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           contents: [{
@@ -48,20 +45,20 @@ export default function Home() {
         })
       });
 
-      const wrapperData = await response.json();
-      
-      // AllOrigins wraps responses inside a standard contents string object
-      const data = typeof wrapperData.contents === 'string' ? JSON.parse(wrapperData.contents) : wrapperData.contents;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+      }
 
-      if (data.error) {
-        setScript(`AI Engine Connection Error: ${data.error.message || 'Verification Failed'}`);
-      } else if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+      const data = await response.json();
+
+      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
         setScript(data.candidates[0].content.parts[0].text);
       } else {
         setScript('Error: Received empty text from the AI system.');
       }
     } catch (err: any) {
-      setScript(`Network Routing Error: ${err.message || 'Connection Refused'}`);
+      setScript(`AI Generation Error: ${err.message || 'Connection Failed'}`);
     } finally {
       setLoading(false);
     }
