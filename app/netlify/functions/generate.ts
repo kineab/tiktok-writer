@@ -1,5 +1,4 @@
 exports.handler = async function (event, context) {
-  // Universal headers to let any browser securely catch the incoming data payload
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -53,7 +52,7 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // Correctly parses Google's standard array block structure cleanly
+    // CORRECTLY SELECTS THE FIRST ITEM [0] IN GOOGLE'S ARRAYS TO PULL RAW TEXT
     let scriptText = '';
     if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
       scriptText = data.candidates[0].content.parts[0].text || '';
