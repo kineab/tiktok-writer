@@ -52,10 +52,12 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // CORRECTLY SELECTS THE FIRST ITEM [0] IN GOOGLE'S ARRAYS TO PULL RAW TEXT
+    // TARGETS THE EXACT OBJECT PATHWAY BY EXTRACTING THE FIRST ITEM FROM BOTH ARRAYS
     let scriptText = '';
     if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
       scriptText = data.candidates[0].content.parts[0].text || '';
+    } else {
+      scriptText = 'Error: The server received data back from Google, but the internal layout structures did not match expected arrays.';
     }
     
     return {
