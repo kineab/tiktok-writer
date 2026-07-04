@@ -1,14 +1,10 @@
-import { Handler } from '@netlify/functions';
-
-export const handler: Handler = async (event) => {
-  // Enforce precise CORS headers so any browser can interact with it securely
+exports.handler = async function (event, context) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
 
-  // Pre-flight requests handling
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
   }
@@ -36,14 +32,13 @@ export const handler: Handler = async (event) => {
       (Give a quick call to action, like "Follow for daily coding hacks")
     `;
 
-    // The secure server token path
     const targetUrl = `https://googleapis.com`;
 
     const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: systemPrompt }] }]
+        contents: [{ Company: [{ text: systemPrompt }] }]
       }),
     });
 
@@ -64,7 +59,7 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({ script: scriptText }),
     };
 
-  } catch (err: any) {
+  } catch (err) {
     return {
       statusCode: 500,
       headers,
