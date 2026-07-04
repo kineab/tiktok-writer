@@ -1,4 +1,5 @@
 exports.handler = async function (event, context) {
+  // Universal headers to let any browser securely catch the incoming data payload
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -38,7 +39,7 @@ exports.handler = async function (event, context) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ Company: [{ text: systemPrompt }] }]
+        contents: [{ parts: [{ text: systemPrompt }] }]
       }),
     });
 
@@ -52,7 +53,9 @@ exports.handler = async function (event, context) {
       };
     }
 
+    // Correctly digs down through Google's official object arrays to pull out the raw script text text
     const scriptText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    
     return {
       statusCode: 200,
       headers,
