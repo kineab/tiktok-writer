@@ -1,19 +1,8 @@
-import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
-
-// Pulls cleanly from Netlify environment settings
-const API_KEY = process.env.GEMINI_API_KEY || "";
-const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 export async function POST(req: Request) {
   try {
     const { topic, vibe } = await req.json();
-    
-    if (!API_KEY) {
-      return NextResponse.json({ 
-        error: "The server code cannot find your API key string. Please verify your Netlify variable panel." 
-      }, { status: 500 });
-    }
 
     const systemPrompt = `
       You are an expert short-form video copywriter specializing in viral TikToks, YouTube Shorts, and Instagram Reels.
@@ -31,13 +20,32 @@ export async function POST(req: Request) {
       (Give a quick call to action, like "Follow for daily coding hacks")
     `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: systemPrompt,
+    // Direct network call to Google AI Studio using your verified key
+    const targetUrl = `https://googleapis.com`;
+
+    const googleResponse = await fetch(targetUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: systemPrompt }] }]
+      }),
     });
 
-    return NextResponse.json({ script: response.text });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || "API Connection Failed" }, { status: 500 });
+    const data = await googleResponse.json();
+
+    if (data.error) {
+      return NextResponse.json({ error: data.error.message }, { status: 400 });
+    }
+
+    // Safely reads down through Google's response array layers natively
+    let scriptText = "Empty response from AI.";
+    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+      scriptText = data.candidates[0].content.parts[0].text || "Empty text payload.";
+    }
+
+    return NextResponse.json({ script: scriptText });
+
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message || "Internal Server Failure" }, { status: 500 });
   }
 }
