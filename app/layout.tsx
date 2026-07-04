@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "@/app/globals.css";
+// app/layout.tsx
+import './globals.css'
 
 export const metadata: Metadata = {
   title: "Short Video Essay & Script Writer",
