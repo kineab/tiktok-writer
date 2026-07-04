@@ -30,10 +30,13 @@ export default function Home() {
         (Give a quick call to action, like "Follow for daily coding hacks")
       `;
 
-      // Direct secure proxy pathway that routes through the official Google Generative Language pipeline
-      const targetUrl = `https://googleapis.com`;
+      // The raw Google endpoint address
+      const googleUrl = `https://googleapis.com`;
+      
+      // We route the request through a public CORS wrapper to bypass browser blocking walls instantly
+      const proxyUrl = `https://allorigins.win{encodeURIComponent(googleUrl)}`;
 
-      const response = await fetch(targetUrl, {
+      const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +48,10 @@ export default function Home() {
         })
       });
 
-      const data = await response.json();
+      const wrapperData = await response.json();
+      
+      // AllOrigins wraps responses inside a standard contents string object
+      const data = typeof wrapperData.contents === 'string' ? JSON.parse(wrapperData.contents) : wrapperData.contents;
 
       if (data.error) {
         setScript(`AI Engine Connection Error: ${data.error.message || 'Verification Failed'}`);
