@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { GoogleGenAI } from "@google/genai";
 
 export default function Home() {
   const [topic, setTopic] = useState('');
@@ -14,19 +15,38 @@ export default function Home() {
     setScript('');
     
     try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, vibe }),
+      // Hard-coded direct-link bypasses missing server files instantly
+      const API_KEY = "AQ.Ab8RN6KlmXTbyv-gpgDYhNTlU2GrYzyiCAEsm5XGTbjTC0tEww";
+      const ai = new GoogleGenAI({ apiKey: API_KEY });
+
+      const systemPrompt = `
+        You are an expert short-form video copywriter specializing in viral TikToks, YouTube Shorts, and Instagram Reels.
+        Write a highly engaging video script about: "${topic}".
+        The overall tone of the video must be: "${vibe}".
+
+        Strictly format your response exactly like this template layout:
+        [0-3 SECONDS: THE SCROLL-STOPPING HOOK]
+        (Insert dramatic or high-energy opening line here)
+
+        [3-20 SECONDS: THE BODY POINTS]
+        (Break down the core value into 3 quick, punchy, sentence-long beats)
+
+        [20-30 SECONDS: THE CTA]
+        (Give a quick call to action, like "Follow for daily coding hacks")
+      `;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: systemPrompt,
       });
-      const data = await response.json();
-      if (data.error) {
-        setScript('Error: ' + data.error);
+
+      if (response && response.text) {
+        setScript(response.text);
       } else {
-        setScript(data.script);
+        setScript('Error: Received empty text from the AI system.');
       }
-    } catch (err) {
-      setScript('Failed to connect to the AI engine.');
+    } catch (err: any) {
+      setScript(`AI Engine Connection Error: ${err.message || 'Verification Failed'}`);
     } finally {
       setLoading(false);
     }
