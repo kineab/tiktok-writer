@@ -2,11 +2,13 @@
   "name": "tiktok-writer",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+    "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+
   },
   "dependencies": {
     "@google/genai": "^2.10.0",
