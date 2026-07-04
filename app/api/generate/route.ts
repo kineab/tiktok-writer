@@ -1,22 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
 
-// This checks every possible way Vercel caches or stores your environment string
-// Hard-code the key string straight into the backend profile configuration
-const API_KEY = "AQ.Ab8RN6KlmXTbyv-gpgDYhNTlU2GrYzyiCAEsm5XGTbjTC0tEww";
-const ai = new GoogleGenAI({ apiKey: API_KEY });
-
-
+// Pulls cleanly from Netlify environment settings
+const API_KEY = process.env.GEMINI_API_KEY || "";
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 export async function POST(req: Request) {
   try {
     const { topic, vibe } = await req.json();
     
-    // Detailed error trace to check connection paths
     if (!API_KEY) {
       return NextResponse.json({ 
-        error: "The server code cannot find your API key string. Please verify your variable name." 
+        error: "The server code cannot find your API key string. Please verify your Netlify variable panel." 
       }, { status: 500 });
     }
 
