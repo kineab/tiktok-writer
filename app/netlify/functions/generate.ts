@@ -53,8 +53,11 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // Correctly digs down through Google's official object arrays to pull out the raw script text text
-    const scriptText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    // Correctly parses Google's standard array block structure cleanly
+    let scriptText = '';
+    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+      scriptText = data.candidates[0].content.parts[0].text || '';
+    }
     
     return {
       statusCode: 200,
